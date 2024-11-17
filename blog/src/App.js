@@ -6,7 +6,10 @@ function App() {
 
   // Destructuring 
   let [title, change_title] = useState(["ipad-pro", "우동 맛집", "Python Specialist"]);
-  let [like, like_plus] = useState(0);
+  let [like, change_like] = useState([0, 0, 0]);
+  let [modal, setModal] = useState(false);
+  let [modal_title, change_modal_title] = useState(0);
+  let [input_value, change_value] = useState('');
 
   return (
     <div className="App">
@@ -37,29 +40,60 @@ function App() {
         Sort
       </button>
 
-      <div className='list'>
-        <h4>
-          {title[0]}
-          <span onClick={() => { like_plus(like + 1) }}>
-            👍
-          </span>
-          {like}
-        </h4>
-        <p>9월 29일 발행</p>
-      </div>
-      <div className='list'>
-        <h4>{title[1]}</h4>
-        <p>9월 29일 발행</p>
-      </div>
-      <div className='list'>
-        <h4>{title[2]}</h4>
-        <p>9월 29일 발행</p>
-      </div>
-      
-      <Modal />
+      {
+        title.map(function (a, i) {
+          return (
+            <div className='list' key={i}>
+              <h4 onClick={() => {
+                setModal(modal === true ? false : true);
+                change_modal_title(i);
+              }
+              }>
+                {title[i]}
+              </h4>
+              <p>9월 29일 발행 <span onClick={() => {
+                let copy = [...like];
+                copy[i] = copy[i] + 1;
+                change_like(copy)
+              }}>👍</span>{like[i]} </p>
+              <button onClick={() => {
+                let copy = [...title];
+                copy.splice(i, 1);
+                change_title(copy);
+                
+                let copy2 = [...like];
+                copy2.splice(i, 1);
+                change_like(copy2);
+              }}>글 삭제</button>
+            </div>
+          )
+        })
+      }
 
+      <input onChange={(e) => {
+        change_value(e.target.value);  // 비동기 처리 (useState 변경 함수는 늦게처리됨)
+      }} />
 
+      <button onClick={() => {
+        if (input_value.trim() === '') {
+          alert("글을 작성해주세요.");
+          return;
+        }
+        
+        let copy = [...title];
+        copy.unshift(input_value);
+        change_title(copy);
 
+        let copy2 = [...like];
+        copy2.unshift(0);
+        change_like(copy2);
+      }}>
+        글 발행
+      </button>
+
+      {
+        modal === true ? <Modal change_title={change_title} title={title} modal_title={modal_title} /> : null
+      }
 
     </div>
   );
@@ -71,12 +105,19 @@ function App() {
 //   )
 // }
 
-function Modal() {
+function Modal(
+  props
+) {
   return (
     <div className='modal'>
-      <h4>제목</h4>
+      <h4>{props.title[props.modal_title]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      <button onClick={() => {
+        let copy = [...props.title];
+        copy[0] = "Macbook Air - 15";
+        props.change_title(copy);
+      }}>글 수정</button>
     </div>
   )
 }
