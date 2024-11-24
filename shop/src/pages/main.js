@@ -1,20 +1,15 @@
-import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import data from './data.js';
-import './App.css';
+import '../App.css';
 
-function Main() {
-
-    let [shoes] = useState(data)
-
+function Main(props) {
     return (
         <>
             <div className='main-bg'></div>
             <Container>
                 <Row>
-                    {shoes.map(function (product, i) {
+                    {props.shoes.map(function (product, i) {
                         return (
-                            <Card shoes={shoes} i={i}></Card>
+                            <Card shoes={props.shoes} i={i}></Card>
                         )
                     })}
                 </Row>
@@ -23,7 +18,6 @@ function Main() {
 
     )
 }
-
 function Card(props) {
     return (
         <Col xs={12} lg={4}>
