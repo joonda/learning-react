@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
+import { Context1 } from "../App";
 
 function Detail(props) {
 
@@ -22,6 +23,7 @@ function Detail(props) {
     }, [num]);
 
     let { id } = useParams();
+
     let product = props.shoes.find(function (x) {
         return x.id == id
     });
@@ -31,12 +33,12 @@ function Detail(props) {
     let [fade2, setFade2] = useState('');
 
     useEffect(() => {
-        let a = setTimeout(() => { setFade2('end') }, 10)
+        let a = setTimeout(() => { setFade2('end') }, 50)
         return () => {
             clearTimeout(a)
             setFade2('')
         }
-    },  [])
+    }, [])
 
     return (
         <div className={`container start ${fade2}`}>
@@ -69,18 +71,20 @@ function Detail(props) {
                     <Nav.Link onClick={() => { setTabbtn(2) }} eventKey="link2">Option 3</Nav.Link>
                 </Nav.Item>
             </Nav>
-            <TabContent tabBtn={tabBtn} />
+            <TabContent tabBtn={tabBtn} product={product} />
         </div>
     )
 }
 
 function TabContent(props) {
 
+    let { inventory } = useContext(Context1)
+
     let [fade, setFade] = useState('')
 
     useEffect(() => {
         // automatic batching
-        let a = setTimeout(() => { setFade('end') }, 10) 
+        let a = setTimeout(() => { setFade('end') }, 50)
         return () => {
             clearTimeout(a)
             setFade('')
@@ -88,13 +92,13 @@ function TabContent(props) {
     }, [props.tabBtn])
 
     if (props.tabBtn == 0) {
-        return <div className={`start ${fade}`}>내용 0</div>
+        return <div className={`start ${fade}`}>{props.product.title}</div>
     }
     if (props.tabBtn == 1) {
-        return <div className={`start ${fade}`}>내용 1</div>
+        return <div className={`start ${fade}`}>{props.product.content}</div>
     }
     if (props.tabBtn == 2) {
-        return <div className={`start ${fade}`}>내용 2</div>
+        return <div className={`start ${fade}`}>{inventory[0]}</div>
     }
 }
 

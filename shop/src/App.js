@@ -1,16 +1,20 @@
 import './App.css';
 import { Routes, Route, useNavigate, Outlet } from 'react-router-dom'
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import Detail from './pages/detail.js';
-import Main from './pages/main.js';
+import Detail from './pages/Detail.js'
+import Main from './pages/Main.js';
+import Cart from './pages/Cart.js';
 import data from './data/data.js';
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import axios from 'axios';
+
+export let Context1 = createContext()
 
 function App() {
 
   let navigate = useNavigate();
   let [shoes, setShoes] = useState(data);
+  let [inventory, setInventory] = useState([10, 11, 12]);
   let [count, setCount] = useState(1);
   let [showBtn, setShowBtn] = useState(true);
   let [showLoading, setShowLodaing] = useState(false);
@@ -75,7 +79,11 @@ function App() {
         } />
         {/* URL Parameter */}
         {/* :id는 아무거나 입력을 해도 된다. */}
-        <Route path='/detail/:id' element={<Detail shoes={shoes} />} />
+        <Route path='/detail/:id' element={
+          <Context1.Provider value={{ inventory, shoes }}>
+            <Detail shoes={shoes} />
+          </Context1.Provider>
+        } />
 
         {/* next route */}
         {/* Outlet을 활용하여 보여준다. */}
@@ -84,7 +92,7 @@ function App() {
           <Route path='two' element={<div>Birthday Coupon!</div>} />
         </Route>
 
-
+        <Route path='/cart' element={<Cart />} />
         <Route path='*' element={<div>404</div>} />
       </Routes>
 
