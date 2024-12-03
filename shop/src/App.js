@@ -1,8 +1,8 @@
 import './App.css';
 import { Routes, Route, useNavigate, Outlet } from 'react-router-dom'
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import Detail from './pages/Detail.js'
-import Main from './pages/Main.js';
+import Detail from './pages/detail.js'
+import Main from './pages/main.js';
 import Cart from './pages/Cart.js';
 import data from './data/data.js';
 import { createContext, useState } from 'react';
@@ -29,6 +29,7 @@ function App() {
             <Nav.Link onClick={() => { navigate('/') }}>Home</Nav.Link>
             <Nav.Link onClick={() => { navigate('/detail') }}>Detail</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link onClick={() => {navigate('./Cart')}}>Cart</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

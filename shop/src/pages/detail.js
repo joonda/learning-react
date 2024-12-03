@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
 import { Context1 } from "../App";
+import { addCart } from "../store";
+import { useDispatch } from "react-redux";
 
 function Detail(props) {
 
@@ -40,6 +42,8 @@ function Detail(props) {
         }
     }, [])
 
+    let dispatch = useDispatch()
+
     return (
         <div className={`container start ${fade2}`}>
             {
@@ -56,7 +60,9 @@ function Detail(props) {
                     <h4 className="pt-5">{product.title}</h4>
                     <p>{product.content}</p>
                     <p>{product.price}원</p>
-                    <button className="btn btn-danger">주문하기</button>
+                    <button className="btn btn-danger" onClick={() => {
+                        dispatch(addCart({id:product.id, name:product.title, count:1}))
+                    }}>주문하기</button>
                 </div>
             </div>
 
