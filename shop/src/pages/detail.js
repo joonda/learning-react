@@ -30,6 +30,15 @@ function Detail(props) {
         return x.id == id
     });
 
+    useEffect(() => {
+        let itemList = localStorage.getItem("watched")
+        itemList = JSON.parse(itemList)
+        itemList.push(product.id)
+        itemList = new Set(itemList)
+        itemList = Array.from(itemList)
+        localStorage.setItem("watched", JSON.stringify(itemList))
+    }, [])
+
     let [tabBtn, setTabbtn] = useState(0);
 
     let [fade2, setFade2] = useState('');
